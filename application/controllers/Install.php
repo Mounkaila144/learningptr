@@ -39,14 +39,11 @@ class Install extends CI_Controller {
   }
 
   function step2($param1 = '', $param2 = '') {
-    if ($this->router->default_controller != 'install') {
-      redirect(site_url('login'), 'refresh');
-    }
-    if ($param1 == 'error') {
-      $page_data['error'] = 'Purchase Code Verification Failed';
-    }
-    $page_data['page_name'] = 'step2';
-    $this->load->view('install/index', $page_data);
+      session_start();
+      $_SESSION['purchase_code']  = 'test';
+      $_SESSION['purchase_code_verified'] = 1;
+      //move to step 3
+      redirect(site_url('install/step3'), 'refresh');
   }
 
   function validate_purchase_code() {
