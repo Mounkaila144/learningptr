@@ -1,24 +1,6 @@
-
-
-
-
-
-
-
-
-# Ignorer le dossier third_party
-/application/libraries/
-/uploads/install.sql
-
-# Ignorer les fichiers de configuration sensibles
-#application/config/database.php
-
-
-# Ignorer les fichiers spécifiques à l'IDE
-.idea/
-*.sublime-project
-*.sublime-workspace
-.vscode/
-*.code-workspace
-
-
+swaks --auth \
+      --server mail.ptrniger.com \
+      --au direction@ptrniger.com \
+      --ap ptrniger144 \
+      --from direction@ptrniger.com \
+      --to mounkaila144@gmail.com

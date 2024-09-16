@@ -38,6 +38,10 @@ class Home extends CI_Controller
 
     public function index()
     {
+        $this->home2();
+    }
+ public function page()
+    {
         $this->home();
     }
 
@@ -79,6 +83,12 @@ class Home extends CI_Controller
         $page_data['page_name'] = "home";
         $page_data['page_title'] = site_phrase('home');
         $this->load->view('frontend/' . get_frontend_settings('theme') . '/index', $page_data);
+    }
+ public function home2()
+    {
+        $page_data['page_name'] = "home";
+        $page_data['page_title'] = site_phrase('home');
+        $this->load->view('frontend/index2', $page_data);
     }
 
     //send gift
