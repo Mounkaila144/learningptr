@@ -521,7 +521,60 @@
                 <h2 class="section-title__title">Les <mark>Meilleures</mark> Formations </h2>
             </div>
 
-            <h1>ici</h1>
+            <?php if(get_frontend_settings('latest_course_section') == 1): ?>
+                <!---------- Latest courses Section start --------------->
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab1">
+                        <div class="row g-6">
+                            <?php
+                            $latest_courses = $this->crud_model->get_latest_10_course();
+                            foreach ($latest_courses as $latest_course) :
+                                $lessons = $this->crud_model->get_lessons('course', $latest_course['id']);
+                                $instructor_details = $this->user_model->get_all_user($latest_course['creator'])->row_array();
+                                $course_duration = $this->crud_model->get_total_duration_of_lesson_by_course_id($latest_course['id']);
+                                $total_rating =  $this->crud_model->get_ratings('course', $latest_course['id'], true)->row()->rating;
+                                $number_of_ratings = $this->crud_model->get_ratings('course', $latest_course['id'])->num_rows();
+                                $average_ceil_rating = $number_of_ratings > 0 ? ceil($total_rating / $number_of_ratings) : 0;
+                                ?>
+                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                    <div class="course-item" data-aos="fade-up" data-aos-duration="1000">
+                                        <div class="course-header">
+                                            <div class="course-header__thumbnail">
+                                                <a href="<?php echo site_url('home/course/' . rawurlencode(slugify($latest_course['title'])) . '/' . $latest_course['id']); ?>">
+                                                    <img src="<?php echo $this->crud_model->get_course_thumbnail_url($latest_course['id']); ?>" style="width: 330px; height: 221px" alt="courses">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="course-info">
+                                            <div class="row">
+                                                <div class="col"><span class="course-info__badge-text badge-all"><?php echo get_phrase($latest_course['level']); ?></span></div>
+                                                <div class="col"><span class="course-info__badge-text badge-border">Durée: <?php echo $course_duration; ?></span></div>
+                                            </div>
+                                            <h3 class="course-info__title-02"><a href="#"><?php echo $latest_course['title']; ?></a></h3>
+                                            <a href="#" class="course-info__instructor"><?php echo $instructor_details['first_name'] . ' ' . $instructor_details['last_name']; ?></a>
+                                            <div class="course-info__price">
+                                                <span class="sale-price"><?php echo $latest_course['is_free_course'] ? 'Gratuit' : currency($latest_course['price']); ?></span>
+                                            </div>
+                                            <div class="course-info__rating">
+                                                <div class="rating-star">
+                                                    <div class="rating-label" style="width: <?php echo ($average_ceil_rating / 5) * 100; ?>%;"></div>
+                                                </div>
+                                                <span>(<?php echo $number_of_ratings; ?>)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                            <?php if (empty($latest_courses)) : ?>
+                                <h1 class="text-center">Aucune Formation disponible</h1>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!---------- Latest courses Section End --------------->
+            <?php endif; ?>
+
 
         </div>
     </div>
