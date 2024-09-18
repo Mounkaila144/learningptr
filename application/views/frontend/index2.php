@@ -37,12 +37,16 @@
 
 </head>
 <body>
-
+<?php $cart_items = $this->session->userdata('cart_items'); ?>
+<?php $user_id = $this->session->userdata('user_id'); ?>
+<?php $user_login = $this->session->userdata('user_login'); ?>
+<?php $admin_login = $this->session->userdata('admin_login'); ?>
+<?php if($user_id > 0){$user_details = $this->user_model->get_all_user($user_id)->row_array();} ?>
 <main class="main-wrapper">
     <!-- Header start -->
     <div class="header-section header-sticky">
 
-        <!-- Header Top Start test -->
+        <!-- Header Top Start -->
         <div class="header-top-02 d-none d-sm-block">
             <div class="container">
 
@@ -139,6 +143,34 @@
                                         <a href="#"> <span>Contacts</span></a>
                                     </li>
 
+                                    <?php if($user_login): ?>
+                                        <li class="wisth_tgl_div"> <!-- Début du bloc de liste de souhaits -->
+                                            <a class="menu_wisth_tgl mt-1">
+                                                <i class="fa-regular fa-heart"></i>
+                                                <?php if(count($my_wishlist_items) > 0): ?>
+                                                    <span class="menu_number" id="wishlistItemsCounter">
+                        <?php echo count($my_wishlist_items); ?>
+                    </span>
+                                                <?php endif; ?>
+                                            </a>
+                                            <div class="menu_pro_wish">
+                                                <div class="overflow-control" id="wishlistItems">
+                                                    <?php include "wishlist_items.php"; ?>
+                                                </div>
+                                                <div class="menu_pro_btn">
+                                                    <a href="<?php echo site_url('home/my_wishlist'); ?>" class="btn btn-primary text-white">
+                                                        <?php echo get_phrase('Go to wishlist'); ?>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li> <!-- Fin du bloc de liste de souhaits -->
+
+                                        <li class="notification-area"> <!-- Début du bloc de notification -->
+                                            <div class="wisth_tgl_2div" id="headerNotification">
+                                                <?php include "notifications.php"; ?>
+                                            </div>
+                                        </li> <!-- Fin du bloc de notification -->
+                                    <?php endif; ?>
 
                                     <?php if(!$user_login): ?>
                                         <li><a href="<?php echo site_url('login'); ?>" class=" text-danger"><span><?php echo get_phrase('Login'); ?></span></a></li>
