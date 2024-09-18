@@ -139,7 +139,39 @@
                                         <a href="#"> <span>Contacts</span></a>
                                     </li>
 
+                                    <?php if($user_login): ?>
+                                        <li class="wisth_tgl_div"> <!-- Début du bloc de liste de souhaits -->
+                                            <a class="menu_wisth_tgl mt-1">
+                                                <i class="fa-regular fa-heart"></i>
+                                                <?php if(count($my_wishlist_items) > 0): ?>
+                                                    <span class="menu_number" id="wishlistItemsCounter">
+                        <?php echo count($my_wishlist_items); ?>
+                    </span>
+                                                <?php endif; ?>
+                                            </a>
+                                            <div class="menu_pro_wish">
+                                                <div class="overflow-control" id="wishlistItems">
+                                                    <?php include "wishlist_items.php"; ?>
+                                                </div>
+                                                <div class="menu_pro_btn">
+                                                    <a href="<?php echo site_url('home/my_wishlist'); ?>" class="btn btn-primary text-white">
+                                                        <?php echo get_phrase('Go to wishlist'); ?>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li> <!-- Fin du bloc de liste de souhaits -->
 
+                                        <li class="notification-area"> <!-- Début du bloc de notification -->
+                                            <div class="wisth_tgl_2div" id="headerNotification">
+                                                <?php include "notifications.php"; ?>
+                                            </div>
+                                        </li> <!-- Fin du bloc de notification -->
+                                    <?php endif; ?>
+
+                                    <?php if(!$user_login): ?>
+                                        <li><a href="<?php echo site_url('login'); ?>" class=" text-danger"><span><?php echo get_phrase('Login'); ?></span></a></li>
+                                        <li><a href="<?php echo site_url('sign_up'); ?>" class=" text-capitalize text-warning" style="min-width: 70px"><span>Inscription</span></a></li>
+                                    <?php endif; ?>
 
 
 
@@ -313,170 +345,51 @@
         <div class="offcanvas-body">
             <nav class="canvas-menu">
                 <ul class="offcanvas-menu">
-                    <li><a class="active" href="#"><span>Home</span></a>
+                    <li><a class="active" href="#"><span>Accueil</span></a>
 
-                        <ul class="mega-menu">
-                            <li>
-                                <!-- Mega Menu Content Start -->
-                                <div class="mega-menu-content">
-                                    <div class="row">
-                                        <div class="col-xl-3">
-                                            <div class="menu-content-list">
-                                                <a href="index-main.html" class="menu-content-list__link">Main Demo <span class="badge hot">Hot</span></a>
-                                                <a href="index-course-hub.html" class="menu-content-list__link">Course Hub</a>
-                                                <a href="index-online-academy.html" class="menu-content-list__link">Online Academy <span class="badge hot">Hot</span></a>
-                                                <a href="index-university.html" class="menu-content-list__link">University</a>
-                                                <a href="index-education-center.html" class="menu-content-list__link">Education Center <span class="badge hot">Hot</span></a>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3">
-                                            <div class="menu-content-list">
-                                                <a href="index-language-academic.html" class="menu-content-list__link">Language Academic</a>
-                                                <a href="index-single-instructor.html" class="menu-content-list__link">Single Instructor</a>
-                                                <a href="index-dev.html" class="menu-content-list__link">Dev <span class="badge new">New</span></a>
-                                                <a href="index-online-art.html" class="menu-content-list__link">Online Art <span class="badge new">New</span></a>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <div class="menu-content-banner" style="background-image: url(assets/images/home-megamenu-bg.jpg);">
-                                                <h4 class="menu-content-banner__title">Atteindre vos objectifs avec PTR-Niger</h4>
-                                                <a href="#" class="menu-content-banner__btn btn btn-primary btn-hover-secondary">Purchase now</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Mega Menu Content Start -->
-                            </li>
-                        </ul>
+
 
 
 
 
                     </li>
                     <li>
-                        <a href="#"><span>Courses</span></a>
+                        <a href="<?php echo site_url('home/page'); ?>"><span>Formations</span></a>
+
+                    </li>
+
+                    <li>
+                        <a href="#"> <span>Nos Services</span></a>
                         <ul class="sub-menu">
-                            <li><a href="course-grid-01.html"><span>Grid Basic Layout</span></a></li>
-                            <li><a href="course-grid-02.html"><span>Grid Modern Layout</span></a></li>
-                            <li><a href="course-grid-left-sidebar.html"><span>Grid Left Sidebar</span></a></li>
-                            <li><a href="course-grid-right-sidebar.html"><span>Grid Right Sidebar</span></a></li>
-                            <li><a href="course-list.html"><span>List Basic Layout</span></a></li>
-                            <li><a href="course-list-left-sidebar.html"><span>List Left Sidebar</span></a></li>
-                            <li><a href="course-list-right-sidebar.html"><span>List Right Sidebar</span></a></li>
-                            <li><a href="course-category.html"><span>Category Page</span></a></li>
+                            <li><a href="blog-grid-01.html"><span>Impression tout support</span></a></li>
+                            <li><a href="blog-grid-02.html"><span>Site Web</span></a></li>
+                            <li><a href="blog-grid-left-sidebar.html"><span>Réseaux & Systèmes</span></a></li>
+                            <li><a href="blog-grid-right-sidebar.html"><span>Infographie</span></a></li>
+                            <li><a href="blog-list-style-01.html"><span>Maintenaces Informatiques</span></a></li>
+                            <li><a href="blog-list-style-02.html"><span>Installations</span></a></li>
                             <li>
-                                <a href="#"><span>Single Layout</span></a>
+                                <a href="#"><span>Logiciels</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="course-single-layout-01.html"><span>Layout 01</span></a></li>
-                                    <li><a href="course-single-layout-02.html"><span>Layout 02</span></a></li>
-                                    <li><a href="course-single-layout-03.html"><span>Layout 03</span></a></li>
-                                    <li><a href="course-single-layout-04.html"><span>Layout 04</span></a></li>
+                                    <li><a href="blog-details-left-sidebar.html"><span>Vente de Licences</span></a></li>
+                                    <li><a href="blog-details-right-sidebar.html"><span>Logiciels sur Mésures</span></a></li>
+                                    <li><a href="blog-details.html"><span>Création</span></a></li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
+
                     <li>
                         <a href="#"><span>Blog</span></a>
                         <ul class="sub-menu">
-                            <li><a href="blog-grid-01.html"><span>Grid Basic Layout</span></a></li>
-                            <li><a href="blog-grid-02.html"><span>Grid Wide</span></a></li>
-                            <li><a href="blog-grid-left-sidebar.html"><span>Grid Left Sidebar</span></a></li>
-                            <li><a href="blog-grid-right-sidebar.html"><span>Grid Right Sidebar</span></a></li>
-                            <li><a href="blog-list-style-01.html"><span>List Layout 01</span></a></li>
-                            <li><a href="blog-list-style-02.html"><span>List Layout 02</span></a></li>
+                            <li><a href="blog-list-style-02.html"><span>Voir les articles</span></a></li>
                             <li>
-                                <a href="#"><span>Single Layouts</span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="blog-details-left-sidebar.html"><span>Left Sidebar</span></a></li>
-                                    <li><a href="blog-details-right-sidebar.html"><span>Right Sidebar</span></a></li>
-                                    <li><a href="blog-details.html"><span>No Sidebar</span></a></li>
-                                </ul>
+                                <a href="#"><span>Partager votre avis</span></a>
                             </li>
                         </ul>
                     </li>
+
                     <li>
-                        <a href="#"><span>Pages</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="become-an-instructor.html"><span>Become an Instructor</span></a></li>
-                            <li>
-                                <a href="instructors.html"><span>Instructor</span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="dashboard-my-courses.html"><span>My Courses</span></a></li>
-                                    <li><a href="dashboard-announcement.html"><span>Announcements</span></a></li>
-                                    <li><a href="dashboard-withdraw.html"><span>Withdrawals</span></a></li>
-                                    <li><a href="dashboard-quiz-attempts.html"><span>Quiz Attempts</span></a></li>
-                                    <li><a href="dashboard-question-answer.html"><span>Question & Answer</span></a></li>
-                                    <li><a href="dashboard-assignments.html"><span>Assignments</span></a></li>
-                                    <li><a href="dashboard-students.html"><span>My Students</span></a></li>
-                                </ul>
-                            </li>
-                            <li><a href="about.html"><span>About us</span></a></li>
-                            <li><a href="about-02.html"><span>About us 02</span></a></li>
-                            <li><a href="contact-us.html"><span>Contact us</span></a></li>
-                            <li><a href="contact-us-02.html"><span>Contact us 02</span></a></li>
-                            <li><a href="membership-plans.html"><span>Membership plans</span></a></li>
-                            <li><a href="faqs.html"><span>FAQs</span></a></li>
-                            <li><a href="404-page.html"><span>404 Page</span></a></li>
-                            <li>
-                                <a href="#"><span>Dashboard</span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="dashboard-index.html"><span>Dashboard</span></a></li>
-                                    <li><a href="dashboard-student-index.html"><span>Dashboard Student</span></a></li>
-                                    <li><a href="dashboard-profile.html"><span>My Profile</span></a></li>
-                                    <li><a href="dashboard-all-course.html"><span>Enrolled Courses</span></a></li>
-                                    <li><a href="dashboard-wishlist.html"><span>Wishlist</span></a></li>
-                                    <li><a href="dashboard-reviews.html"><span>Reviews</span></a></li>
-                                    <li><a href="dashboard-my-quiz-attempts.html"><span>My Quiz Attempts</span></a></li>
-                                    <li><a href="dashboard-purchase-history.html"><span>Purchase History</span></a></li>
-                                    <li><a href="dashboard-settings.html"><span>Settings</span></a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><span>Features</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="#"><span>Events</span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="event-grid-sidebar.html"><span>Event Listing 01</span></a></li>
-                                    <li><a href="event-grid.html"><span>Event Listing 02</span></a></li>
-                                    <li><a href="event-list.html"><span>Event Listing 03</span></a></li>
-                                    <li><a href="event-list-sidebar.html"><span>Event Listing 04</span></a></li>
-                                    <li>
-                                        <a href="#"><span>Single Layouts</span></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="event-details-layout-01.html"><span>Layout 01</span></a></li>
-                                            <li><a href="event-details-layout-02.html"><span>Layout 02</span></a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><span>Shop</span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="shop-default.html"><span>Shop – Default</span></a></li>
-                                    <li><a href="shop-left-sidebar.html"><span>Shop – Left Sidebar</span></a></li>
-                                    <li><a href="shop-right-sidebar.html"><span>Shop – Right Sidebar</span></a></li>
-                                    <li><a href="my-account.html"><span>My account</span></a></li>
-                                    <li><a href="wishlist.html"><span>Wishlist</span></a></li>
-                                    <li><a href="cart.html"><span>Cart</span></a></li>
-                                    <li><a href="cart-empty.html"><span>Cart Empty</span></a></li>
-                                    <li><a href="checkout.html"><span>Checkout</span></a></li>
-                                    <li>
-                                        <a href="#"><span>Single Layouts</span></a>
-                                        <ul class="sub-menu">
-                                            <li><a href="shop-single-list-left-sidebar.html"><span>List – Left Sidebar</span></a></li>
-                                            <li><a href="shop-single-list-right-sidebar.html"><span>List – Right Sidebar</span></a></li>
-                                            <li><a href="shop-single-list-no-sidebar.html"><span>List – No Sidebar</span></a></li>
-                                            <li><a href="shop-single-tab-left-sidebar.html"><span>Tabs – Left Sidebar</span></a></li>
-                                            <li><a href="shop-single-tab-right-sidebar.html"><span>Tabs – Right Sidebar</span></a></li>
-                                            <li><a href="shop-single-tab-no-sidebar.html"><span>Tabs – No Sidebar</span></a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="zoom-meetings.html"><span>Zoom Meetings</span></a></li>
-                            <li><a href="zoom-meetings-single.html"><span>Zoom Meeting Single</span></a></li>
-                        </ul>
+                        <a href="#"> <span>Contacts</span></a>
                     </li>
 
 
@@ -501,12 +414,18 @@
 
         <!-- Header User Button Start -->
         <div class="offcanvas-user d-lg-none">
-            <div class="offcanvas-user__button">
-                <button class="offcanvas-user__login btn btn-secondary btn-hover-secondarys" data-bs-toggle="modal" data-bs-target="#loginModal">Log In</button>
-            </div>
-            <div class="offcanvas-user__button">
-                <button class="offcanvas-user__signup btn btn-primary btn-hover-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Sign Up</button>
-            </div>
+
+
+            <?php if(!$user_login): ?>
+                <div class="">
+                    <a href="<?php echo site_url('login'); ?>" class=" btn btn-secondary btn-hover-secondarys" ><?php echo get_phrase('Login'); ?></a>
+                </div>
+                <div class="">
+                    <a href="<?php echo site_url('sign_up'); ?>" class=" btn btn-primary btn-hover-primary" >Inscription</a>
+                </div>
+
+            <?php endif; ?>
+
         </div>
         <!-- Header User Button End -->
 
@@ -556,9 +475,7 @@
                                                 <span class="sale-price"><?php echo $latest_course['is_free_course'] ? 'Gratuit' : currency($latest_course['price']); ?></span>
                                             </div>
                                             <div class="course-info__rating">
-                                                <div class="rating-star">
-                                                    <div class="rating-label" style="width: <?php echo ($average_ceil_rating / 5) * 100; ?>%;"></div>
-                                                </div>
+
                                                 <span>(<?php echo $number_of_ratings; ?>)</span>
                                             </div>
                                         </div>
