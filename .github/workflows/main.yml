@@ -21,4 +21,4 @@ jobs:
         ssh-keyscan -H 185.143.102.187 >> ~/.ssh/known_hosts
 
     - name: Deploy via SSH
-      run: ssh ubuntu@185.143.102.187 "cd /var/www/learning && git pull origin main"
+      run: ssh ubuntu@185.143.102.187 "cd /var/www/learning && sudo git pull origin main"
