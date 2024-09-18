@@ -172,7 +172,7 @@
                                         </li> <!-- Fin du bloc de notification -->
                                     <?php endif; ?>
 
-                                    <?php if(!$user_login): ?>
+                                    <?php if(!$user_id): ?>
                                         <li><a href="<?php echo site_url('login'); ?>" class=" text-danger"><span><?php echo get_phrase('Login'); ?></span></a></li>
                                         <li><a href="<?php echo site_url('sign_up'); ?>" class=" text-capitalize text-warning" style="min-width: 70px"><span>Inscription</span></a></li>
                                     <?php endif; ?>
@@ -421,7 +421,7 @@
         <div class="offcanvas-user d-lg-none">
 
 
-            <?php if(!$user_login): ?>
+            <?php if(!$user_id): ?>
                 <div class="">
                     <a href="<?php echo site_url('login'); ?>" class=" btn btn-secondary btn-hover-secondarys" ><?php echo get_phrase('Login'); ?></a>
                 </div>
