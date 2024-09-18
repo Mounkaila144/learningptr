@@ -337,7 +337,8 @@
     <div class="offcanvas offcanvas-end offcanvas-mobile" id="offcanvasMobileMenu" style="background-image: url(assets/images/mobile-bg.jpg);">
         <div class="offcanvas-header bg-white">
             <div class="offcanvas-logo">
-                <a class="offcanvas-logo__logo" href="#"><img src="<?php echo base_url() . './assets2/images/dark-logo.png'; ?>" alt="Logo"></a>
+                <a class="offcanvas-logo__logo" href="#"><img src="<?php echo base_url() . './assets2/images/LogoPTR-Niger-V2_Propos-Correction2.gif'; ?>" width="296" height="34" alt="Logo"></a>
+
             </div>
             <button type="button" class="offcanvas-close" data-bs-dismiss="offcanvas"><i class="fal fa-times"></i></button>
         </div>
