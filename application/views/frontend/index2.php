@@ -55,8 +55,8 @@
 
                     <div class="header-top-bar-wrap__info">
                         <ul class="header-top-bar-wrap__info-list header-top-bar-wrap__info-list-02">
-                            <li><a href="tel:+22794203434"><i class="fas fa-phone"></i> <span class="info-text">(+227) 94203434</span></a></li>
-                            <li><a href="contact@ptr-niger.com"><i class="far fa-envelope"></i> <span class="info-text">contact@ptr-niger.com</span></a></li>
+                            <li><a href="tel:+22794203434"><i class="fas fa-phone"></i> <span class="info-text">+227 70212112</span></a></li>
+                            <li><a href="contact@ptr-niger.com"><i class="far fa-envelope"></i> <span class="info-text">Mail@ptrniger.com</span></a></li>
                         </ul>
                     </div>
 
