@@ -338,7 +338,7 @@
     </div>
     <!-- Slider Section End -->
     <!-- Offcanvas Start -->
-    <div class="offcanvas offcanvas-end offcanvas-mobile" id="offcanvasMobileMenu" style="background-image: url(assets/images/mobile-bg.jpg);">
+    <div class="offcanvas offcanvas-end offcanvas-mobile" id="offcanvasMobileMenu" style="background-image: url(assets2/images/mobile-bg.jpg);">
         <div class="offcanvas-header bg-white">
             <div class="offcanvas-logo">
                 <a class="offcanvas-logo__logo" href="#"><img src="<?php echo base_url() . './assets2/images/LogoPTR-Niger-V2_Propos-Correction2.gif'; ?>" width="296" height="34" alt="Logo"></a>
