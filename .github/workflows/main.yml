@@ -10,15 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2  # Vérifie le code source du dépôt
 
-    - name: Setup SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H 185.143.102.187 >> ~/.ssh/known_hosts
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.5.3  # Utilise l'agent SSH pour gérer la clé privée
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Charge la clé privée à partir des secrets GitHub
 
-    - name: Deploy via SSH
-      run: ssh ubuntu@185.143.102.187 "cd /var/www/learning && git pull origin main"
+      - name: Add SSH keyscan to known_hosts
+        run: |
+          ssh-keyscan -H 185.143.102.187 >> ~/.ssh/known_hosts
+          # Ajoute l'hôte distant à la liste des hôtes connus pour éviter les problèmes de vérification de l'empreinte
+
+      - name: Test SSH connection
+        run: ssh -o StrictHostKeyChecking=no ubuntu@185.143.102.187 "echo 'SSH connection successful!'"
+        # Vérifie si la connexion SSH fonctionne correctement
+
+      - name: Deploy via SSH
+        run: ssh ubuntu@185.143.102.187 "cd /var/www/learning && git pull origin main"
+        # Exécute la commande de déploiement sur le serveur distant
