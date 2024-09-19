@@ -308,7 +308,8 @@ if (!function_exists('currency')) {
             $symbol = $CI->db->get('currency')->row('symbol');
 
             $CI->db->where('key', 'currency_position');
-            $position = $CI->db->get('settings')->row('value');
+            //$position = $CI->db->get('settings')->row('value');
+            $position = 'right-space';
 
             if ($position == 'right') {
                 return $price . $symbol;
