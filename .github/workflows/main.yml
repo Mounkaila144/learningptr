@@ -25,7 +25,7 @@ jobs:
 
       - name: Test SSH connection
         run: ssh -o StrictHostKeyChecking=no ubuntu@185.143.102.187 "echo 'SSH connection successful!'"
-        # Vérifie si la connexion SSH fonctionne correctement
+        # Vérifie si la connexion SSH fonctionne correctement f
 
       - name: Deploy via SSH
         run: ssh ubuntu@185.143.102.187 "cd /var/www/learning && git pull origin main"
