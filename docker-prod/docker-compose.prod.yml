@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker-prod/Dockerfile.prod
+    container_name: smart_school_app_prod
+    volumes:
+      - ../:/var/www/html
+    expose:
+      - "9000"
+    restart: always
+    networks:
+      - smart_school_network_prod
+
+  db:
+    image: mariadb:latest
+    container_name: mariadb_database_prod
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data_prod:/var/lib/mysql
+    networks:
+      - smart_school_network_prod
+
+volumes:
+  db_data_prod:
+
+networks:
+  smart_school_network_prod:
+    driver: bridge 
