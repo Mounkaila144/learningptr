@@ -2460,9 +2460,24 @@ class Admin extends CI_Controller
     function language_import()
     {
         $this->load->dbforge();
+        
+        // Débogue les fichiers reçus
+        file_put_contents('/tmp/language_debug.log', 'Fichiers reçus: ' . var_export($_FILES, true) . "\n", FILE_APPEND);
+        
+        // Vérifier si des fichiers ont été uploadés
+        if(empty($_FILES['language_files']['name'][0])) {
+            file_put_contents('/tmp/language_debug.log', 'ERREUR: Aucun fichier uploadé' . "\n", FILE_APPEND);
+            $this->session->set_flashdata('error_message', get_phrase('Aucun_fichier_uploadé'));
+            redirect(site_url('admin/manage_language'), 'refresh');
+            return;
+        }
 
         foreach ($_FILES['language_files']['name'] as $key => $language) {
+            file_put_contents('/tmp/language_debug.log', 'Traitement du fichier: ' . $language . "\n", FILE_APPEND);
+            
             $language_name = strtolower(preg_replace('/\s+/', '_', explode('.', $_FILES['language_files']['name'][$key])[0]));
+            file_put_contents('/tmp/language_debug.log', 'Nom de langue: ' . $language_name . "\n", FILE_APPEND);
+            
             //Create language column if not exist
             if (!$this->db->field_exists($language_name, 'language')) {
                 $fields = array(
@@ -2473,28 +2488,66 @@ class Admin extends CI_Controller
                         'collation' => 'utf8_unicode_ci'
                     )
                 );
-                $this->dbforge->add_column('language', $fields);
-            }
-
-            $language_content_arr = json_decode(file_get_contents($_FILES['language_files']['tmp_name'][$key]), true);
-            if (is_array($language_content_arr)) {
-                //Upload the json file
-                move_uploaded_file($_FILES['language_files']['tmp_name'][$key], 'application/language/' . $language_name . '.json');
-            } else {
-                $this->session->set_flashdata('error_message', get_phrase('JSON_validation_failed') . '!');
-                redirect(site_url('admin/manage_language'), 'refresh');
-            }
-
-            foreach ($language_content_arr as $phrase_key => $phrase) {
-                $phrase_key = strtolower(preg_replace('/\s+/', '_', $phrase_key));
-                $query = $this->db->get_where('language', ['phrase' => $phrase_key]);
-
-                if ($query->num_rows() > 0) {
-                    $this->db->where('phrase', $phrase_key);
-                    $this->db->update('language', [$language_name => $phrase]);
-                } else {
-                    $this->db->insert('language', ['phrase' => $phrase_key, $language_name => $phrase]);
+                file_put_contents('/tmp/language_debug.log', 'Ajout colonne BDD: ' . $language_name . "\n", FILE_APPEND);
+                try {
+                    $this->dbforge->add_column('language', $fields);
+                    file_put_contents('/tmp/language_debug.log', 'Colonne ajoutée avec succès' . "\n", FILE_APPEND);
+                } catch (Exception $e) {
+                    file_put_contents('/tmp/language_debug.log', 'ERREUR ajout colonne: ' . $e->getMessage() . "\n", FILE_APPEND);
                 }
+            }
+
+            // Vérifier si le fichier temporaire existe
+            if (!file_exists($_FILES['language_files']['tmp_name'][$key])) {
+                file_put_contents('/tmp/language_debug.log', 'ERREUR: Fichier temporaire non trouvé: ' . $_FILES['language_files']['tmp_name'][$key] . "\n", FILE_APPEND);
+                continue;
+            }
+            
+            // Vérifier si le fichier est lisible
+            if (!is_readable($_FILES['language_files']['tmp_name'][$key])) {
+                file_put_contents('/tmp/language_debug.log', 'ERREUR: Fichier non lisible' . "\n", FILE_APPEND);
+                continue;
+            }
+            
+            try {
+                $file_content = file_get_contents($_FILES['language_files']['tmp_name'][$key]);
+                file_put_contents('/tmp/language_debug.log', 'Contenu lu: ' . substr($file_content, 0, 100) . '...' . "\n", FILE_APPEND);
+                
+                $language_content_arr = json_decode($file_content, true);
+                
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    file_put_contents('/tmp/language_debug.log', 'ERREUR JSON: ' . json_last_error_msg() . "\n", FILE_APPEND);
+                }
+                
+                if (is_array($language_content_arr)) {
+                    //Upload the json file
+                    $destination = 'application/language/' . $language_name . '.json';
+                    file_put_contents('/tmp/language_debug.log', 'Déplacement vers: ' . $destination . "\n", FILE_APPEND);
+                    
+                    if (move_uploaded_file($_FILES['language_files']['tmp_name'][$key], $destination)) {
+                        file_put_contents('/tmp/language_debug.log', 'Fichier déplacé avec succès' . "\n", FILE_APPEND);
+                    } else {
+                        file_put_contents('/tmp/language_debug.log', 'ERREUR: Échec du déplacement. Erreur: ' . error_get_last()['message'] . "\n", FILE_APPEND);
+                    }
+                } else {
+                    file_put_contents('/tmp/language_debug.log', 'ERREUR: Le contenu JSON n\'est pas un tableau' . "\n", FILE_APPEND);
+                    $this->session->set_flashdata('error_message', get_phrase('JSON_validation_failed') . '!');
+                    redirect(site_url('admin/manage_language'), 'refresh');
+                }
+
+                foreach ($language_content_arr as $phrase_key => $phrase) {
+                    $phrase_key = strtolower(preg_replace('/\s+/', '_', $phrase_key));
+                    $query = $this->db->get_where('language', ['phrase' => $phrase_key]);
+
+                    if ($query->num_rows() > 0) {
+                        $this->db->where('phrase', $phrase_key);
+                        $this->db->update('language', [$language_name => $phrase]);
+                    } else {
+                        $this->db->insert('language', ['phrase' => $phrase_key, $language_name => $phrase]);
+                    }
+                }
+            } catch (Exception $e) {
+                file_put_contents('/tmp/language_debug.log', 'ERREUR FATALE: ' . $e->getMessage() . "\n", FILE_APPEND);
             }
         }
 
