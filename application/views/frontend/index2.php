@@ -113,8 +113,8 @@
                                         <a href="#"> <span>Nos Services</span></a>
                                         <ul class="sub-menu">
                                             <li><a href="blog-grid-01.html"><span>Impression tout support</span></a></li>
-                                            <li><a href="blog-grid-02.html"><span>Site Web</span></a></li>
-                                            <li><a href="blog-grid-left-sidebar.html"><span>Réseaux & Systèmes</span></a></li>
+                                            <li><a href="<?php echo site_url('home/website_pricing'); ?>"><span>Site Web</span></a></li>
+                                            <li><a href="<?php echo site_url('home'); ?>"><span>Réseaux & Systèmes</span></a></li>
                                             <li><a href="blog-grid-right-sidebar.html"><span>Infographie</span></a></li>
                                             <li><a href="blog-list-style-01.html"><span>Maintenaces Informatiques</span></a></li>
                                             <li><a href="blog-list-style-02.html"><span>Installations</span></a></li>
@@ -367,8 +367,8 @@
                         <a href="#"> <span>Nos Services</span></a>
                         <ul class="sub-menu">
                             <li><a href="blog-grid-01.html"><span>Impression tout support</span></a></li>
-                            <li><a href="blog-grid-02.html"><span>Site Web</span></a></li>
-                            <li><a href="blog-grid-left-sidebar.html"><span>Réseaux & Systèmes</span></a></li>
+                            <li><a href="<?php echo site_url('home/website_pricing'); ?>"><span>Site Web</span></a></li>
+                            <li><a href="<?php echo site_url('home'); ?>"><span>Réseaux & Systèmes</span></a></li>
                             <li><a href="blog-grid-right-sidebar.html"><span>Infographie</span></a></li>
                             <li><a href="blog-list-style-01.html"><span>Maintenaces Informatiques</span></a></li>
                             <li><a href="blog-list-style-02.html"><span>Installations</span></a></li>

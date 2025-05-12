@@ -2024,4 +2024,93 @@ class Home extends CI_Controller
             echo $response;
         }
     }
+
+    public function website_pricing()
+    {
+        $page_data['page_name'] = "website_pricing";
+        $page_data['page_title'] = "Tarifs Sites Web";
+        $this->load->view('frontend/website_pricing', $page_data);
+    }
+
+    public function process_form()
+    {
+        // Vérifier si c'est une requête AJAX
+        $is_ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+        
+        // Récupérer les données du formulaire
+        $name = $this->input->post('name');
+        $email = $this->input->post('email');
+        $phone = $this->input->post('phone');
+        $package = $this->input->post('package');
+        $message = $this->input->post('message');
+        $contact_method = $this->input->post('contact_method', true) ?? 'email';
+        
+        // Validation des données
+        if (empty($name) || empty($email) || empty($phone) || empty($package)) {
+            if ($is_ajax) {
+                echo json_encode(['status' => 'error', 'message' => 'Veuillez remplir tous les champs obligatoires.']);
+                return;
+            } else {
+                $this->session->set_flashdata('error_message', 'Veuillez remplir tous les champs obligatoires.');
+                redirect('home/website_pricing');
+                return;
+            }
+        }
+        
+        // Contenu de l'email
+        $email_body = "Nouvelle demande de site web :\n\n";
+        $email_body .= "Nom: " . $name . "\n";
+        $email_body .= "Email: " . $email . "\n";
+        $email_body .= "Téléphone: " . $phone . "\n";
+        $email_body .= "Forfait choisi: " . $package . "\n";
+        $email_body .= "Méthode de contact préférée: " . $contact_method . "\n";
+        $email_body .= "Message: " . $message . "\n";
+        
+        try {
+            // Chargement du modèle email
+            $this->load->model('email_model');
+            
+            // Envoi de l'email avec les paramètres du système
+            $email_sent = $this->email_model->send_smtp_mail(
+                $email_body, 
+                'Nouvelle demande de site web - ' . $package, 
+                ['contact@ptr-niger.com', 'balmokhtarjack@gmail.com'], 
+                $email
+            );
+            
+            // Enregistrer les données dans la base de données
+            $data = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'package' => $package,
+                'message' => $message,
+                'contact_method' => $contact_method,
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+            
+            // Si vous avez une table pour les demandes, décommentez la ligne suivante
+            // $this->db->insert('website_requests', $data);
+            
+            // Réponse
+            if ($email_sent) {
+                if ($is_ajax) {
+                    echo json_encode(['status' => 'success']);
+                } else {
+                    $this->session->set_flashdata('flash_message', 'Votre demande a été envoyée avec succès. Nous vous contacterons bientôt!');
+                    redirect('home/website_pricing');
+                }
+            } else {
+                throw new Exception("Échec de l'envoi de l'email.");
+            }
+        } catch (Exception $e) {
+            // En cas d'erreur
+            if ($is_ajax) {
+                echo json_encode(['status' => 'error', 'message' => 'Une erreur est survenue lors de l\'envoi du formulaire: ' . $e->getMessage()]);
+            } else {
+                $this->session->set_flashdata('error_message', 'Une erreur est survenue lors de l\'envoi du formulaire: ' . $e->getMessage());
+                redirect('home/website_pricing');
+            }
+        }
+    }
 }
