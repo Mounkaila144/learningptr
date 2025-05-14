@@ -487,7 +487,7 @@
                         <span class="text-2xl font-medium text-gray-600">CFA</span>
                         <span class="block text-sm text-gray-500 mt-1">par site</span>
                     </div>
-                    <ul class="space-y-4 mb-10 max-h-[400px] overflow-y-auto pr-2">
+                    <ul class="space-y-4 mb-10  pr-2">
                         <li class="flex items-start">
                             <div class="feature-icon text-accent-500 mr-3 mt-1">
                                 <i class="fas fa-check-circle"></i>
