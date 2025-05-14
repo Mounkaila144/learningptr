@@ -329,6 +329,18 @@
                             </div>
                             <span class="text-gray-700">Formulaire de contact</span>
                         </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-primary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Sous-domaine PTR Niger offert</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-primary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Hébergement gratuit 1 an</span>
+                        </li>
                         <li class="flex items-start text-gray-400">
                             <div class="mr-3 mt-1">
                                 <i class="fas fa-times-circle"></i>
@@ -383,6 +395,72 @@
                             </div>
                             <span class="text-gray-700">Système de blog</span>
                         </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Domaine personnalisé inclus</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Hébergement gratuit 2 ans</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Certificat SSL gratuit (HTTPS)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Formulaire de contact avancé</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Optimisation SEO de base</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Mises à jour de contenu (jusqu'à 3 modifications)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Intégration réseaux sociaux</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Galerie/photos à défilement infini</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Module FAQ et témoignages clients</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Optimisation mobile & tablette</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-secondary-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Maintenance corrective (bugs mineurs)</span>
+                        </li>
                         <li class="flex items-start text-gray-400">
                             <div class="mr-3 mt-1">
                                 <i class="fas fa-times-circle"></i>
@@ -409,12 +487,12 @@
                         <span class="text-2xl font-medium text-gray-600">CFA</span>
                         <span class="block text-sm text-gray-500 mt-1">par site</span>
                     </div>
-                    <ul class="space-y-4 mb-10">
+                    <ul class="space-y-4 mb-10 max-h-[400px] overflow-y-auto pr-2">
                         <li class="flex items-start">
                             <div class="feature-icon text-accent-500 mr-3 mt-1">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <span class="text-gray-700">Site e-commerce complet</span>
+                            <span class="text-gray-700">Site e-commerce complet (illimité produits)</span>
                         </li>
                         <li class="flex items-start">
                             <div class="feature-icon text-accent-500 mr-3 mt-1">
@@ -426,19 +504,163 @@
                             <div class="feature-icon text-accent-500 mr-3 mt-1">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <span class="text-gray-700">Gestion des stocks avancée</span>
+                            <span class="text-gray-700">Gestion des stocks & alertes</span>
                         </li>
                         <li class="flex items-start">
                             <div class="feature-icon text-accent-500 mr-3 mt-1">
                                 <i class="fas fa-check-circle"></i>
                             </div>
-                            <span class="text-gray-700">Analyse des performances</span>
+                            <span class="text-gray-700">Analyse des performances & rapports avancés</span>
                         </li>
                         <li class="flex items-start">
                             <div class="feature-icon text-accent-500 mr-3 mt-1">
                                 <i class="fas fa-check-circle"></i>
                             </div>
                             <span class="text-gray-700">Support premium 24/7</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Domaine personnalisé inclus</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Hébergement gratuit 5 ans</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Référencement SEO expert</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Certificat SSL gratuit (HTTPS)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">CDN intégré pour chargement ultra-rapide</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Optimisation de la vitesse (core web vitals)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Intégration CRM</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Automatisation marketing & workflows</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Module de réservation/rendez-vous en ligne</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Gestion des avis et notations clients</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Newsletter & séquences automatiques</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Chatbots IA & réponse automatique</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Multilingue (jusqu'à 5 langues)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Traduction professionnelle incluse</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Hébergement haute disponibilité</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Sauvegardes quotidiennes & restauration</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Sécurité renforcée</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Mise à jour logicielle 10</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Formation & guide utilisateur personnalisé</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Intégration API tierces</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Tableau de bord personnalisé</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Analyse comportementale</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Conformité RGPD & protections vie privée</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="feature-icon text-accent-500 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-700">Monitoring 24/7 & rapports d'uptime</span>
                         </li>
                     </ul>
                     <button class="w-full bg-gradient-to-r from-accent-500 to-accent-700 text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg transition-all">
@@ -467,7 +689,7 @@
                             <div class="bg-white bg-opacity-20 p-2 rounded-full mr-3">
                                 <i class="fas fa-envelope text-sm"></i>
                             </div>
-                            <span>contact@ptr-niger.com</span>
+                            <span>mpail@ptrniger.com</span>
                         </div>
                         <div class="flex items-center">
                             <div class="bg-white bg-opacity-20 p-2 rounded-full mr-3">
