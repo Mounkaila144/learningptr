@@ -348,7 +348,7 @@
                             <span>E-commerce</span>
                         </li>
                     </ul>
-                    <button class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-xl">
+                    <button class="w-full btn-primary text-white font-semibold py-3 px-6 rounded-xl" onclick="selectPackage('Basic')">
                         Commencer <i class="fas fa-arrow-right ml-2"></i>
                     </button>
                 </div>
@@ -468,7 +468,7 @@
                             <span>E-commerce</span>
                         </li>
                     </ul>
-                    <button class="w-full btn-secondary text-white font-semibold py-3 px-6 rounded-xl">
+                    <button class="w-full btn-secondary text-white font-semibold py-3 px-6 rounded-xl" onclick="selectPackage('Medium')">
                         Choisir cette offre <i class="fas fa-star ml-2"></i>
                     </button>
                 </div>
@@ -663,7 +663,7 @@
                             <span class="text-gray-700">Monitoring 24/7 & rapports d'uptime</span>
                         </li>
                     </ul>
-                    <button class="w-full bg-gradient-to-r from-accent-500 to-accent-700 text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg transition-all">
+                    <button class="w-full bg-gradient-to-r from-accent-500 to-accent-700 text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg transition-all" onclick="selectPackage('Premium')">
                         Optez pour l'excellence <i class="fas fa-gem ml-2"></i>
                     </button>
                 </div>
@@ -671,7 +671,7 @@
         </div>
 
         <!-- Contact Form -->
-        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden bg-pattern mb-6">
+        <div id="contactSection" class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden bg-pattern mb-6">
             <div class="md:flex">
                 <div class="md:w-1/2 bg-gradient-to-br from-primary-600 to-secondary-600 p-10 text-white flex flex-col justify-center">
                     <h2 class="text-3xl font-bold mb-4">Prêt à démarrer votre projet?</h2>
@@ -889,6 +889,31 @@
                 window.location.href = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${text}`;
             }, 500);
         });
+        
+        // Fonction pour sélectionner un forfait et faire défiler vers le formulaire
+        function selectPackage(packageName) {
+            // Sélectionner le forfait dans le dropdown
+            const packageSelect = document.getElementById('package');
+            
+            // Trouver l'option correspondante
+            for (let i = 0; i < packageSelect.options.length; i++) {
+                if (packageSelect.options[i].value === packageName) {
+                    packageSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            // Faire défiler vers le formulaire de contact avec une animation fluide
+            document.getElementById('contactSection').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+            
+            // Mettre le focus sur le premier champ du formulaire
+            setTimeout(() => {
+                document.getElementById('name').focus();
+            }, 1000);
+        }
         
         function closeModal() {
             document.getElementById('successModal').classList.add('hidden');
