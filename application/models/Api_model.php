@@ -43,6 +43,17 @@ class Api_model extends CI_Model
 		return $all_categories;
 	}
 
+	// Get all courses
+	function all_courses_get(){
+		$this->db->where('status', 'active');
+		$courses = $this->db->get('course')->result_array();
+		
+		// This block of codes return the required data of courses
+		$result = array();
+		$result = $this->course_data($courses);
+		return $result;
+	}
+
 	// Get categories
 	public function categories_get($category_id)
 	{

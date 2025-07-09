@@ -110,6 +110,13 @@ class Api extends REST_Controller {
     $this->set_response($categories, REST_Controller::HTTP_OK);
   }
 
+  // Fetch all the courses
+  public function all_courses_get() {
+    $courses = array();
+    $courses = $this->api_model->all_courses_get();
+    $this->set_response($courses, REST_Controller::HTTP_OK);
+  }
+
   public function categories_get($category_id = "") {
     $categories = array();
     $categories = $this->api_model->categories_get($category_id);
@@ -220,6 +227,17 @@ class Api extends REST_Controller {
 
   // Signup Api
   public function signup_post() {
+    // Support both JSON and form-data
+    $content_type = $this->input->get_request_header('Content-Type', TRUE);
+    
+    if (strpos($content_type, 'application/json') !== false) {
+      // Handle JSON input
+      $json_input = json_decode($this->input->raw_input_stream, true);
+      if ($json_input) {
+        $_POST = array_merge($_POST, $json_input);
+      }
+    }
+    
     $response = array();
     $response = $this->api_model->signup_post();
     return $this->set_response($response, REST_Controller::HTTP_OK);
@@ -227,6 +245,17 @@ class Api extends REST_Controller {
 
   // Verify Email Api
   public function verify_email_address_post(){
+    // Support both JSON and form-data
+    $content_type = $this->input->get_request_header('Content-Type', TRUE);
+    
+    if (strpos($content_type, 'application/json') !== false) {
+      // Handle JSON input
+      $json_input = json_decode($this->input->raw_input_stream, true);
+      if ($json_input) {
+        $_POST = array_merge($_POST, $json_input);
+      }
+    }
+    
     $response = array();
     $response = $this->api_model->verify_email_address_post();
     return $this->set_response($response, REST_Controller::HTTP_OK);
@@ -234,6 +263,17 @@ class Api extends REST_Controller {
 
   // Resend Verification Code Api
   public function resend_verification_code_post(){
+    // Support both JSON and form-data
+    $content_type = $this->input->get_request_header('Content-Type', TRUE);
+    
+    if (strpos($content_type, 'application/json') !== false) {
+      // Handle JSON input
+      $json_input = json_decode($this->input->raw_input_stream, true);
+      if ($json_input) {
+        $_POST = array_merge($_POST, $json_input);
+      }
+    }
+    
     $response = array();
     $response = $this->api_model->resend_verification_code_post();
     return $this->set_response($response, REST_Controller::HTTP_OK);
@@ -418,6 +458,17 @@ class Api extends REST_Controller {
 
   // update user data
   public function update_userdata_post() {
+    // Support both JSON and form-data
+    $content_type = $this->input->get_request_header('Content-Type', TRUE);
+    
+    if (strpos($content_type, 'application/json') !== false) {
+      // Handle JSON input
+      $json_input = json_decode($this->input->raw_input_stream, true);
+      if ($json_input) {
+        $_POST = array_merge($_POST, $json_input);
+      }
+    }
+    
     $response = array();
     if (isset($_POST['auth_token']) && !empty($_POST['auth_token'])) {
       $auth_token = $_POST['auth_token'];
@@ -434,6 +485,17 @@ class Api extends REST_Controller {
 
   // password reset
   public function update_password_post() {
+    // Support both JSON and form-data
+    $content_type = $this->input->get_request_header('Content-Type', TRUE);
+    
+    if (strpos($content_type, 'application/json') !== false) {
+      // Handle JSON input
+      $json_input = json_decode($this->input->raw_input_stream, true);
+      if ($json_input) {
+        $_POST = array_merge($_POST, $json_input);
+      }
+    }
+    
     $response = array();
     if (isset($_POST['auth_token']) && !empty($_POST['auth_token'])) {
       $auth_token = $_POST['auth_token'];
@@ -613,6 +675,17 @@ class Api extends REST_Controller {
 
 
   public function forgot_password_post(){
+    // Support both JSON and form-data
+    $content_type = $this->input->get_request_header('Content-Type', TRUE);
+    
+    if (strpos($content_type, 'application/json') !== false) {
+      // Handle JSON input
+      $json_input = json_decode($this->input->raw_input_stream, true);
+      if ($json_input) {
+        $_POST = array_merge($_POST, $json_input);
+      }
+    }
+    
     $response = array();
     if(isset($_POST['email']) && !empty($_POST['email'])){
       $email = $this->input->post('email');
