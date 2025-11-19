@@ -1422,11 +1422,237 @@ class Api_model extends CI_Model
 		}
     }
 
+	// Get all users (students)
+	public function all_users_get()
+	{
+		$this->db->where('role_id', 2);
+		$this->db->where('is_instructor', 0);
+		$this->db->order_by('id', 'DESC');
+		$users = $this->db->get('users')->result_array();
 
+		$result = array();
+		foreach ($users as $key => $user) {
+			$result[$key] = array(
+				'id' => $user['id'],
+				'first_name' => $user['first_name'],
+				'last_name' => $user['last_name'],
+				'email' => $user['email'],
+				'phone' => $user['phone'],
+				'address' => $user['address'],
+				'biography' => $user['biography'],
+				'status' => $user['status'],
+				'role' => 'student',
+				'is_instructor' => $user['is_instructor'],
+				'image' => $this->user_model->get_user_image_url($user['id']),
+				'date_added' => date('d M Y', $user['date_added']),
+				'social_links' => json_decode($user['social_links'], true)
+			);
 
+			$enrolled_courses = $this->crud_model->enrol_history_by_user_id($user['id']);
+			$result[$key]['total_enrolled_courses'] = $enrolled_courses->num_rows();
 
+			$courses_list = array();
+			foreach ($enrolled_courses->result_array() as $enrol) {
+				$course = $this->crud_model->get_course_by_id($enrol['course_id'])->row_array();
+				if ($course) {
+					$courses_list[] = array(
+						'course_id' => $course['id'],
+						'course_title' => $course['title'],
+						'enrollment_date' => date('d M Y', $enrol['date_added'])
+					);
+				}
+			}
+			$result[$key]['enrolled_courses'] = $courses_list;
+		}
 
+		return $result;
+	}
 
+	// Get all instructors
+	public function all_instructors_get()
+	{
+		$this->db->where('role_id', 2);
+		$this->db->where('is_instructor', 1);
+		$this->db->order_by('id', 'DESC');
+		$instructors = $this->db->get('users')->result_array();
 
+		$result = array();
+		foreach ($instructors as $key => $instructor) {
+			$result[$key] = array(
+				'id' => $instructor['id'],
+				'first_name' => $instructor['first_name'],
+				'last_name' => $instructor['last_name'],
+				'email' => $instructor['email'],
+				'phone' => $instructor['phone'],
+				'address' => $instructor['address'],
+				'biography' => $instructor['biography'],
+				'status' => $instructor['status'],
+				'role' => 'instructor',
+				'is_instructor' => $instructor['is_instructor'],
+				'image' => $this->user_model->get_user_image_url($instructor['id']),
+				'date_added' => date('d M Y', $instructor['date_added']),
+				'social_links' => json_decode($instructor['social_links'], true),
+				'skills' => json_decode($instructor['skills'], true),
+				'paypal_email' => $instructor['paypal_email']
+			);
+
+			$this->db->where('user_id', $instructor['id']);
+			$this->db->where('status', 'active');
+			$courses = $this->db->get('course')->result_array();
+			$result[$key]['total_courses'] = count($courses);
+
+			$total_students = 0;
+			foreach ($courses as $course) {
+				$total_students += $this->crud_model->enrol_history($course['id'])->num_rows();
+			}
+			$result[$key]['total_students'] = $total_students;
+
+			$courses_list = array();
+			foreach ($courses as $course) {
+				$courses_list[] = array(
+					'course_id' => $course['id'],
+					'course_title' => $course['title'],
+					'course_status' => $course['status'],
+					'enrollments' => $this->crud_model->enrol_history($course['id'])->num_rows()
+				);
+			}
+			$result[$key]['courses'] = $courses_list;
+		}
+
+		return $result;
+	}
+
+	// Get user details by ID
+	public function user_details_get($user_id)
+	{
+		$user = $this->user_model->get_all_user($user_id)->row_array();
+
+		if (!$user) {
+			return array('status' => 'error', 'message' => 'User not found');
+		}
+
+		$result = array(
+			'id' => $user['id'],
+			'first_name' => $user['first_name'],
+			'last_name' => $user['last_name'],
+			'email' => $user['email'],
+			'phone' => $user['phone'],
+			'address' => $user['address'],
+			'biography' => $user['biography'],
+			'status' => $user['status'],
+			'role_id' => $user['role_id'],
+			'role' => get_user_role('user_role', $user['id']),
+			'is_instructor' => $user['is_instructor'],
+			'image' => $this->user_model->get_user_image_url($user['id']),
+			'date_added' => date('d M Y, H:i', $user['date_added']),
+			'social_links' => json_decode($user['social_links'], true),
+			'last_modified' => date('d M Y, H:i', $user['last_modified'])
+		);
+
+		$enrolled_courses = $this->crud_model->enrol_history_by_user_id($user['id']);
+		$result['total_enrolled_courses'] = $enrolled_courses->num_rows();
+
+		$courses_details = array();
+		foreach ($enrolled_courses->result_array() as $enrol) {
+			$course = $this->crud_model->get_course_by_id($enrol['course_id'])->row_array();
+			if ($course) {
+				$course_progress = round(course_progress($course['id'], $user['id']));
+				$courses_details[] = array(
+					'course_id' => $course['id'],
+					'course_title' => $course['title'],
+					'course_thumbnail' => $this->crud_model->get_course_thumbnail_url($course['id']),
+					'enrollment_date' => date('d M Y', $enrol['date_added']),
+					'progress' => $course_progress,
+					'status' => $course['status']
+				);
+			}
+		}
+		$result['enrolled_courses'] = $courses_details;
+
+		if ($user['is_instructor'] == 1) {
+			$result['skills'] = json_decode($user['skills'], true);
+			$result['paypal_email'] = $user['paypal_email'];
+
+			$this->db->where('user_id', $user['id']);
+			$courses = $this->db->get('course')->result_array();
+			$result['total_courses_created'] = count($courses);
+
+			$total_students = 0;
+			foreach ($courses as $course) {
+				$total_students += $this->crud_model->enrol_history($course['id'])->num_rows();
+			}
+			$result['total_students'] = $total_students;
+		}
+
+		return $result;
+	}
+
+	// Get users with filters
+	public function users_filtered_get()
+	{
+		$role = isset($_GET['role']) ? $_GET['role'] : 'all';
+		$status = isset($_GET['status']) ? $_GET['status'] : 'all';
+		$search = isset($_GET['search']) ? $_GET['search'] : '';
+		$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 50;
+		$offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
+
+		$this->db->select('*');
+		$this->db->from('users');
+
+		if ($role == 'student') {
+			$this->db->where('role_id', 2);
+			$this->db->where('is_instructor', 0);
+		} elseif ($role == 'instructor') {
+			$this->db->where('role_id', 2);
+			$this->db->where('is_instructor', 1);
+		} elseif ($role == 'admin') {
+			$this->db->where('role_id', 1);
+		} else {
+			$this->db->where('role_id', 2);
+		}
+
+		if ($status != 'all') {
+			$this->db->where('status', $status);
+		}
+
+		if (!empty($search)) {
+			$this->db->group_start();
+			$this->db->like('first_name', $search);
+			$this->db->or_like('last_name', $search);
+			$this->db->or_like('email', $search);
+			$this->db->or_like('phone', $search);
+			$this->db->group_end();
+		}
+
+		$total_count = $this->db->count_all_results('', FALSE);
+
+		$this->db->limit($limit, $offset);
+		$this->db->order_by('id', 'DESC');
+
+		$users = $this->db->get()->result_array();
+
+		$result = array();
+		foreach ($users as $key => $user) {
+			$result[$key] = array(
+				'id' => $user['id'],
+				'first_name' => $user['first_name'],
+				'last_name' => $user['last_name'],
+				'email' => $user['email'],
+				'phone' => $user['phone'],
+				'status' => $user['status'],
+				'role' => get_user_role('user_role', $user['id']),
+				'is_instructor' => $user['is_instructor'],
+				'image' => $this->user_model->get_user_image_url($user['id']),
+				'date_added' => date('d M Y', $user['date_added'])
+			);
+		}
+
+		return array(
+			'total' => $total_count,
+			'limit' => $limit,
+			'offset' => $offset,
+			'users' => $result
+		);
+	}
 
 }

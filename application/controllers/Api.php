@@ -930,6 +930,144 @@ class Api extends REST_Controller {
 
 
 
+    /**
+     * Get all users (students)
+     * Returns list of all students with their enrolled courses
+     *
+     * @return void
+     */
+    public function all_users_get()
+    {
+        $users = $this->api_model->all_users_get();
+
+        if (!empty($users)) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'Users retrieved successfully',
+                'total_users' => count($users),
+                'data' => $users
+            );
+            $this->set_response($response, REST_Controller::HTTP_OK);
+        } else {
+            $response = array(
+                'status' => 'success',
+                'message' => 'No users found',
+                'total_users' => 0,
+                'data' => array()
+            );
+            $this->set_response($response, REST_Controller::HTTP_OK);
+        }
+    }
+
+    /**
+     * Get all instructors
+     * Returns list of all instructors with their created courses
+     *
+     * @return void
+     */
+    public function all_instructors_get()
+    {
+        $instructors = $this->api_model->all_instructors_get();
+
+        if (!empty($instructors)) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'Instructors retrieved successfully',
+                'total_instructors' => count($instructors),
+                'data' => $instructors
+            );
+            $this->set_response($response, REST_Controller::HTTP_OK);
+        } else {
+            $response = array(
+                'status' => 'success',
+                'message' => 'No instructors found',
+                'total_instructors' => 0,
+                'data' => array()
+            );
+            $this->set_response($response, REST_Controller::HTTP_OK);
+        }
+    }
+
+    /**
+     * Get user details by ID
+     * Returns detailed information for a specific user
+     *
+     * @param string $user_id User ID
+     * @return void
+     */
+    public function user_details_get($user_id = "")
+    {
+        if (empty($user_id)) {
+            $response = array(
+                'status' => 'error',
+                'message' => 'User ID is required',
+                'data' => null
+            );
+            $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+            return;
+        }
+
+        $user_details = $this->api_model->user_details_get($user_id);
+
+        if (!empty($user_details)) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'User details retrieved successfully',
+                'data' => $user_details
+            );
+            $this->set_response($response, REST_Controller::HTTP_OK);
+        } else {
+            $response = array(
+                'status' => 'error',
+                'message' => 'User not found',
+                'data' => null
+            );
+            $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Get filtered users
+     * Returns paginated and filtered list of users
+     *
+     * Query parameters:
+     * - role: 'student' or 'instructor'
+     * - status: '1' (active) or '0' (inactive)
+     * - search: Search term for name or email
+     * - limit: Results per page (default 10)
+     * - offset: Starting position (default 0)
+     *
+     * @return void
+     */
+    public function users_filtered_get()
+    {
+        $users = $this->api_model->users_filtered_get();
+
+        if (!empty($users['data'])) {
+            $response = array(
+                'status' => 'success',
+                'message' => 'Users retrieved successfully',
+                'total_records' => $users['total'],
+                'total_filtered' => $users['filtered'],
+                'limit' => $users['limit'],
+                'offset' => $users['offset'],
+                'data' => $users['data']
+            );
+            $this->set_response($response, REST_Controller::HTTP_OK);
+        } else {
+            $response = array(
+                'status' => 'success',
+                'message' => 'No users found',
+                'total_records' => 0,
+                'total_filtered' => 0,
+                'limit' => $users['limit'],
+                'offset' => $users['offset'],
+                'data' => array()
+            );
+            $this->set_response($response, REST_Controller::HTTP_OK);
+        }
+    }
+
 
 
 
