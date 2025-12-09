@@ -2595,8 +2595,26 @@ class Crud_model extends CI_Model
     {
         $course_id = $this->input->post('course_id');
         $user_id   = $this->input->post('user_id');
-        $course_details = $this->get_course_by_id($course_id)->row_array();
-        if ($course_details['expiry_period'] > 0) {
+
+        // Validation des paramètres
+        if (empty($course_id) || empty($user_id)) {
+            return json_encode(['status' => 0, 'message' => get_phrase('invalid_parameters')]);
+        }
+
+        // Vérifier si le cours existe
+        $course_query = $this->get_course_by_id($course_id);
+        if ($course_query->num_rows() == 0) {
+            return json_encode(['status' => 0, 'message' => get_phrase('course_not_found')]);
+        }
+        $course_details = $course_query->row_array();
+
+        // Vérifier si l'utilisateur existe
+        if ($this->db->get_where('users', ['id' => $user_id])->num_rows() == 0) {
+            return json_encode(['status' => 0, 'message' => get_phrase('user_not_found')]);
+        }
+
+        $data = [];
+        if (isset($course_details['expiry_period']) && $course_details['expiry_period'] > 0) {
             $days = $course_details['expiry_period'] * 30;
             $data['expiry_date'] = strtotime("+" . $days . " days");
         } else {
@@ -2617,8 +2635,7 @@ class Crud_model extends CI_Model
         }
 
         $this->session->set_flashdata('flash_message', get_phrase('student_has_been_enrolled_to_that_course'));
-        $response['status'] = 1;
-        return json_encode($response);
+        return json_encode(['status' => 1, 'message' => get_phrase('student_has_been_enrolled_to_that_course')]);
     }
 
     public function enrol_to_free_course($course_id = "", $user_id = "")

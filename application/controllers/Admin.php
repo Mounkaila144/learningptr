@@ -513,12 +513,19 @@ class Admin extends CI_Controller
 
     public function shortcut_enrol_student()
     {
+        // Set JSON header for AJAX response
+        $this->output->set_content_type('application/json');
+
         if ($this->session->userdata('admin_login') != true) {
-            redirect(site_url('login'), 'refresh');
+            echo json_encode(['status' => 0, 'message' => get_phrase('unauthorized_access')]);
+            return;
         }
 
         // CHECK ACCESS PERMISSION
-        check_permission('enrolment');
+        if (!has_permission('enrolment')) {
+            echo json_encode(['status' => 0, 'message' => get_phrase('permission_denied')]);
+            return;
+        }
 
         echo $this->crud_model->shortcut_enrol_a_student_manually();
     }
