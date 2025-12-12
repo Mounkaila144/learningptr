@@ -588,7 +588,7 @@ class Api extends REST_Controller {
       $auth_token = $_GET['auth_token'];
       $course_id = $_GET['course_id'];
       $logged_in_user_details = json_decode($this->token_data_get($auth_token), true);
-      
+
       $course_details = $this->crud_model->get_course_by_id($course_id)->row_array();
       if ($course_details['is_free_course'] == 1) {
           if($course_details['expiry_period'] > 0){
@@ -600,7 +600,7 @@ class Api extends REST_Controller {
 
           $data['gifted_by'] = 0;
 
-          
+
           if ($this->db->get_where('enrol', ['course_id' => $course_id, 'user_id' => $logged_in_user_details['user_id']])->num_rows() > 0) {
               $data['last_modified'] = strtotime(date('D, d-M-Y'));
               $this->db->where('user_id', $logged_in_user_details['user_id']);
@@ -627,6 +627,104 @@ class Api extends REST_Controller {
     }
 
     return $this->set_response($response, REST_Controller::HTTP_OK);
+  }
+
+  // Inscription rapide d'un étudiant (Admin only) - JWT Authentication
+  public function shortcut_enrol_student_post(){
+    $response = array();
+
+    // Récupérer le token depuis le header Authorization ou POST data
+    $auth_token = $this->input->post('auth_token');
+    if(empty($auth_token)){
+      $headers = $this->input->request_headers();
+      if(isset($headers['Authorization'])){
+        $auth_token = str_replace('Bearer ', '', $headers['Authorization']);
+      }
+    }
+
+    // Vérifier le token
+    if (empty($auth_token)) {
+      $response['status'] = 0;
+      $response['message'] = 'Token d\'authentification manquant';
+      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+    }
+
+    try {
+      // Décoder le token et récupérer les informations utilisateur
+      $logged_in_user_details = json_decode($this->token_data_get($auth_token), true);
+
+      // Vérifier que l'utilisateur est admin
+      if ($logged_in_user_details['role'] != 'admin') {
+        $response['status'] = 0;
+        $response['message'] = 'Accès non autorisé. Seuls les administrateurs peuvent inscrire des étudiants';
+        return $this->set_response($response, REST_Controller::HTTP_FORBIDDEN);
+      }
+
+      // Récupérer les paramètres
+      $course_id = $this->input->post('course_id');
+      $user_id = $this->input->post('user_id');
+
+      // Validation des paramètres
+      if (empty($course_id) || empty($user_id)) {
+        $response['status'] = 0;
+        $response['message'] = 'Paramètres invalides. course_id et user_id sont requis';
+        return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+      }
+
+      // Vérifier si le cours existe
+      $course_query = $this->crud_model->get_course_by_id($course_id);
+      if ($course_query->num_rows() == 0) {
+        $response['status'] = 0;
+        $response['message'] = 'Cours non trouvé';
+        return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+      }
+      $course_details = $course_query->row_array();
+
+      // Vérifier si l'utilisateur existe
+      if ($this->db->get_where('users', ['id' => $user_id])->num_rows() == 0) {
+        $response['status'] = 0;
+        $response['message'] = 'Utilisateur non trouvé';
+        return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+      }
+
+      // Préparer les données d'inscription
+      $data = [];
+      if (isset($course_details['expiry_period']) && $course_details['expiry_period'] > 0) {
+        $days = $course_details['expiry_period'] * 30;
+        $data['expiry_date'] = strtotime("+" . $days . " days");
+      } else {
+        $data['expiry_date'] = null;
+      }
+
+      // Vérifier si l'utilisateur est déjà inscrit
+      if ($this->db->get_where('enrol', ['course_id' => $course_id, 'user_id' => $user_id])->num_rows() > 0) {
+        // Mettre à jour l'inscription existante
+        $data['gifted_by'] = 0;
+        $data['last_modified'] = strtotime(date('D, d-M-Y'));
+        $this->db->where('user_id', $user_id);
+        $this->db->where('course_id', $course_id);
+        $this->db->update('enrol', $data);
+
+        $response['status'] = 1;
+        $response['message'] = 'Inscription mise à jour avec succès';
+      } else {
+        // Créer une nouvelle inscription
+        $data['course_id'] = $course_id;
+        $data['user_id'] = $user_id;
+        $data['date_added'] = strtotime(date('D, d-M-Y'));
+        $this->db->insert('enrol', $data);
+
+        $response['status'] = 1;
+        $response['message'] = 'Étudiant inscrit avec succès au cours';
+      }
+
+      return $this->set_response($response, REST_Controller::HTTP_OK);
+
+    } catch (Exception $e) {
+      $response['status'] = 0;
+      $response['message'] = 'Erreur: ' . $e->getMessage();
+      return $this->set_response($response, REST_Controller::HTTP_INTERNAL_ERROR);
+    }
   }
 
 
