@@ -727,6 +727,73 @@ class Api extends REST_Controller {
     }
   }
 
+  // Désinscrire un étudiant d'un cours (Admin only) - JWT Authentication
+  public function unenrol_student_post(){
+    $response = array();
+
+    // Récupérer le token depuis le header Authorization ou POST data
+    $auth_token = $this->input->post('auth_token');
+    if(empty($auth_token)){
+      $headers = $this->input->request_headers();
+      if(isset($headers['Authorization'])){
+        $auth_token = str_replace('Bearer ', '', $headers['Authorization']);
+      }
+    }
+
+    // Vérifier le token
+    if (empty($auth_token)) {
+      $response['status'] = 0;
+      $response['message'] = 'Token d\'authentification manquant';
+      return $this->set_response($response, REST_Controller::HTTP_UNAUTHORIZED);
+    }
+
+    try {
+      // Décoder le token et récupérer les informations utilisateur
+      $logged_in_user_details = json_decode($this->token_data_get($auth_token), true);
+
+      // Vérifier que l'utilisateur est admin
+      if ($logged_in_user_details['role'] != 'admin') {
+        $response['status'] = 0;
+        $response['message'] = 'Accès non autorisé. Seuls les administrateurs peuvent désinscrire des étudiants';
+        return $this->set_response($response, REST_Controller::HTTP_FORBIDDEN);
+      }
+
+      // Récupérer les paramètres
+      $course_id = $this->input->post('course_id');
+      $user_id = $this->input->post('user_id');
+
+      // Validation des paramètres
+      if (empty($course_id) || empty($user_id)) {
+        $response['status'] = 0;
+        $response['message'] = 'Paramètres invalides. course_id et user_id sont requis';
+        return $this->set_response($response, REST_Controller::HTTP_BAD_REQUEST);
+      }
+
+      // Vérifier si l'inscription existe
+      $enrolment = $this->db->get_where('enrol', ['course_id' => $course_id, 'user_id' => $user_id]);
+
+      if ($enrolment->num_rows() == 0) {
+        $response['status'] = 0;
+        $response['message'] = 'Inscription non trouvée. L\'utilisateur n\'est pas inscrit à ce cours';
+        return $this->set_response($response, REST_Controller::HTTP_NOT_FOUND);
+      }
+
+      // Supprimer l'inscription
+      $this->db->where('user_id', $user_id);
+      $this->db->where('course_id', $course_id);
+      $this->db->delete('enrol');
+
+      $response['status'] = 1;
+      $response['message'] = 'Étudiant désinscrit avec succès du cours';
+      return $this->set_response($response, REST_Controller::HTTP_OK);
+
+    } catch (Exception $e) {
+      $response['status'] = 0;
+      $response['message'] = 'Erreur: ' . $e->getMessage();
+      return $this->set_response($response, REST_Controller::HTTP_INTERNAL_ERROR);
+    }
+  }
+
 
   function addon_status_get(){
     if(addon_status($_GET['unique_identifier'])){
